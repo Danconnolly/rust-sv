@@ -27,6 +27,10 @@ pub const MAINNET_PRIVATE_EXTENDED_KEY: u32 = 0x0488ADE4;
 pub const TESTNET_PUBLIC_EXTENDED_KEY: u32 = 0x043587C;
 /// "tprv" prefix for private extended keys on testnet
 pub const TESTNET_PRIVATE_EXTENDED_KEY: u32 = 0x04358394;
+/// pub prefix for public extended keys on regtest
+pub const REGTEST_PUBLIC_EXTENDED_KEY: u32 = 0x043587CF;
+/// prv prefix for private extended keys on regtest
+pub const REGTEST_PRIVATE_EXTENDED_KEY: u32 = 0x04358394;
 
 /// Public or private key type
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
@@ -68,6 +72,9 @@ impl ExtendedKey {
                 Network::Testnet | Network::STN => c
                     .write_u32::<BigEndian>(TESTNET_PUBLIC_EXTENDED_KEY)
                     .unwrap(),
+                Network::Regtest => c
+                    .write_u32::<BigEndian>(REGTEST_PUBLIC_EXTENDED_KEY)
+                    .unwrap(),
             }
             c.write_u8(depth).unwrap();
             c.write(parent_fingerprint).unwrap();
@@ -105,6 +112,9 @@ impl ExtendedKey {
                     .unwrap(),
                 Network::Testnet | Network::STN => c
                     .write_u32::<BigEndian>(TESTNET_PRIVATE_EXTENDED_KEY)
+                    .unwrap(),
+                Network::Regtest => c
+                    .write_u32::<BigEndian>(REGTEST_PRIVATE_EXTENDED_KEY)
                     .unwrap(),
             }
             c.write_u8(depth).unwrap();

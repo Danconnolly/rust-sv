@@ -1,10 +1,6 @@
 use crate::messages::{BlockHeader, OutPoint, Payload, Tx, TxOut};
 use crate::network::Network;
-use crate::util::{
-    sha256d, var_int, Error, Hash256, Result, Serializable, BITCOIN_CASH_FORK_HEIGHT_MAINNET,
-    BITCOIN_CASH_FORK_HEIGHT_TESTNET, GENESIS_UPGRADE_HEIGHT_MAINNET,
-    GENESIS_UPGRADE_HEIGHT_TESTNET,
-};
+use crate::util::{sha256d, var_int, Error, Hash256, Result, Serializable, BITCOIN_CASH_FORK_HEIGHT_MAINNET, BITCOIN_CASH_FORK_HEIGHT_TESTNET, GENESIS_UPGRADE_HEIGHT_MAINNET, GENESIS_UPGRADE_HEIGHT_TESTNET, GENESIS_UPGRADE_HEIGHT_REGTEST};
 use linked_hash_map::LinkedHashMap;
 use std::collections::{HashSet, VecDeque};
 use std::fmt;
@@ -74,11 +70,13 @@ impl Block {
             Network::Mainnet => height >= BITCOIN_CASH_FORK_HEIGHT_MAINNET,
             Network::Testnet => height >= BITCOIN_CASH_FORK_HEIGHT_TESTNET,
             Network::STN => true,
+            Network::Regtest => true,
         };
         let use_genesis_rules = match network {
             Network::Mainnet => height >= GENESIS_UPGRADE_HEIGHT_MAINNET,
             Network::Testnet => height >= GENESIS_UPGRADE_HEIGHT_TESTNET,
             Network::STN => true,
+            Network::Regtest => height >= GENESIS_UPGRADE_HEIGHT_REGTEST,
         };
         for txn in self.txns.iter() {
             if !txn.coinbase() {

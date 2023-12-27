@@ -44,3 +44,6 @@ pub const GENESIS_UPGRADE_HEIGHT_MAINNET: i32 = 620538;
 
 /// Block height that activated the genesis upgrade on testnet
 pub const GENESIS_UPGRADE_HEIGHT_TESTNET: i32 = 1344302;
+
+/// Block height that activated the genesis upgrade on regtest
+pub const GENESIS_UPGRADE_HEIGHT_REGTEST: i32 = 10_000;
